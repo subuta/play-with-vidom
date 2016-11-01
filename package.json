@@ -9,8 +9,8 @@
     "bundle": "jspm bundle webapp/app.js -wid",
     "watch": "npm run bundle",
     "unbundle": "jspm unbundle webapp/app.js",
-    "build": "jspm build webapp/app.js dist/bundled.js --skip-rollup --format umd --skip-source-maps --minify",
-    "build-dev": "jspm build webapp/app.js dist/bundled.js --skip-rollup --format umd"
+    "build": "NODE_ENV=production jspm build webapp/app.js dist/bundled.js --skip-rollup --format umd --skip-source-maps --minify",
+    "build-dev": "NODE_ENV=production jspm build webapp/app.js dist/bundled.js --skip-rollup --format umd"
   },
   "repository": {
     "type": "git",
@@ -35,14 +35,22 @@
   },
   "jspm": {
     "name": "play-with-vidom",
-    "main": "play-with-vidom.js",
+    "configFile": "jspm.config.js",
+    "main": "app.js",
     "dependencies": {
-      "babel-plugin-vidom-jsx": "npm:babel-plugin-vidom-jsx@^0.3.1",
-      "jspm-caddy-hmr": "npm:jspm-caddy-hmr@^0.2.10",
-      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.17",
       "vidom": "npm:vidom@^0.5.1"
     },
-    "devDependencies": {},
+    "devDependencies": {
+      "babel-plugin-transform-class-properties": "npm:babel-plugin-transform-class-properties@^6.18.0",
+      "babel-plugin-transform-regenerator": "npm:babel-plugin-transform-regenerator@^6.16.1",
+      "babel-plugin-vidom-jsx": "npm:babel-plugin-vidom-jsx@^0.3.1",
+      "babel-preset-es2015": "npm:babel-preset-es2015@^6.18.0",
+      "babel-preset-stage-2": "npm:babel-preset-stage-2@^6.18.0",
+      "jspm-caddy-hmr": "npm:jspm-caddy-hmr@^0.2.10",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.17",
+      "babel-runtime": "npm:babel-runtime@^6.18.0",
+      "core-js": "npm:core-js@^2.4.1"
+    },
     "peerDependencies": {
       "assert": "npm:jspm-nodelibs-assert@^0.2.0",
       "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
@@ -60,6 +68,23 @@
       "vm": "npm:jspm-nodelibs-vm@^0.2.0"
     },
     "overrides": {
+      "npm:debug@2.2.0": {
+        "main": "browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./browser.js": {
+            "node": "./node.js"
+          },
+          "./node.js": {
+            "browser": "./browser.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
       "npm:inherits@2.0.1": {
         "ignore": [
           "test.js"
@@ -75,6 +100,10 @@
           "buffer": "@empty",
           "process": "@empty"
         }
+      },
+      "npm:ms@0.7.1": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
       }
     }
   }

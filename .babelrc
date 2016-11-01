@@ -1,4 +1,7 @@
 {
   "presets": ["es2015", "stage-2"],
-  "plugins": ["transform-regenerator", "vidom-jsx"]
+  "plugins": [
+    "transform-regenerator",
+    ["vidom-jsx", {"autoRequire": false}]
+  ]
 }
