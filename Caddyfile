@@ -1,0 +1,24 @@
+# serve from
+:3000
+
+gzip
+browse
+ext .html
+
+websocket /watch "node ./node_modules/.bin/jspm-caddy-hmr"
+
+rewrite {
+  regexp (^/watch$)
+  to /watch
+}
+
+rewrite {
+  regexp (^/$)
+  to /webapp/index.html?{query}
+}
+
+# otherwise prepend /webapp to request
+rewrite {
+  regexp (.*)
+  to /webapp{path} {path} /webapp/index.html?{query}
+}
